@@ -16,7 +16,7 @@ class UserManager(BaseUserManager):
         Creates and saves a User with the given email and password.
         """
         if not email:
-            raise ValueError('The given email must be set')
+            raise ValueError("The given email must be set")
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
@@ -24,16 +24,16 @@ class UserManager(BaseUserManager):
         return user
 
     def create_user(self, email, password=None, **extra_fields):
-        extra_fields.setdefault('is_superuser', False)
+        extra_fields.setdefault("is_superuser", False)
         return self._create_user(email, password, **extra_fields)
 
     def create_superuser(self, email, password, **extra_fields):
-        extra_fields.setdefault('is_superuser', True)
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('seq_number', UsrUser.get_superuser_seq_number())
+        extra_fields.setdefault("is_superuser", True)
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("seq_number", UsrUser.get_superuser_seq_number())
 
-        if extra_fields.get('is_superuser') is not True:
-            raise ValueError('Superuser must have is_superuser=True.')
+        if extra_fields.get("is_superuser") is not True:
+            raise ValueError("Superuser must have is_superuser=True.")
 
         return self._create_user(email, password, **extra_fields)
 
@@ -47,10 +47,14 @@ class UsrUser(AbstractBaseUser, Association, BaseActiveDeleteModel, PermissionsM
     is_staff = models.BooleanField(default=False)
     token = models.TextField(null=True, blank=True)
     status_term = models.CharField(max_length=39, null=True, blank=True)
-    profile_image = models.FileField(upload_to="media/images/profile_images", null=True, blank=True)
+    profile_image = models.FileField(
+        upload_to="media/images/profile_images", null=True, blank=True
+    )
     display_name = models.CharField(max_length=61)
     mobile_number = PhoneNumberField(blank=True, null=True)
-    seq_number = models.PositiveIntegerField(unique=True, editable=False, serialize=True, auto_created=True)
+    seq_number = models.PositiveIntegerField(
+        unique=True, editable=False, serialize=True, auto_created=True
+    )
     user_type_term = models.CharField(max_length=39, null=True, blank=True)
     is_default = models.BooleanField(default=False)
     is_it_admin = models.BooleanField(default=False)
@@ -64,7 +68,6 @@ class UsrUser(AbstractBaseUser, Association, BaseActiveDeleteModel, PermissionsM
 
     @staticmethod
     def get_superuser_seq_number():
-        obj = UsrUser.objects.aggregate(max_value=Max('seq_number'))
-        obj['max_value'] = 0 if obj['max_value'] is None else obj['max_value']
-        return obj['max_value'] + 1
-
+        obj = UsrUser.objects.aggregate(max_value=Max("seq_number"))
+        obj["max_value"] = 0 if obj["max_value"] is None else obj["max_value"]
+        return obj["max_value"] + 1

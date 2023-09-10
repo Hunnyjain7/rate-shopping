@@ -10,4 +10,6 @@ def soft_delete_subscription(sender, instance, **kwargs):  # noqa
     instance.delete()
 
     # Soft delete child SubscriptionDetail records related to this subscription
-    SubscriptionDetail.objects.filter(subscription=instance).update(is_delete=True, is_active=False, is_enable=False)
+    SubscriptionDetail.objects.filter(subscription=instance).update(
+        is_delete=True, is_active=False, is_enable=False
+    )
