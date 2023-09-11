@@ -1,10 +1,10 @@
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
-from django.contrib.auth.models import PermissionsMixin, User
+from django.contrib.auth.models import PermissionsMixin
 from django.db import models
 from django.db.models import Max
-
-from core.models import BaseActiveDeleteModel, Association
 from phonenumber_field.modelfields import PhoneNumberField
+
+from core.models import Association, BaseActiveDeleteModel
 
 
 # Create your models here.

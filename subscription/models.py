@@ -1,8 +1,8 @@
 from django.db import models
 
 from client.models import Client
-from core.models import BaseActiveDeleteModel, ActiveDeleteModel, BaseActivationRenewal
-from core.utils import get_uuid, get_random_number
+from core.models import ActiveDeleteModel, BaseActivationRenewal, BaseActiveDeleteModel
+from core.utils import get_random_number, get_uuid
 
 
 # Create your models here.

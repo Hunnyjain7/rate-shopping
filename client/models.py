@@ -1,6 +1,6 @@
 from django.db import models
 
-from core.models import BaseActiveDeleteModel, BaseActivationRenewal, Address
+from core.models import Address, BaseActivationRenewal, BaseActiveDeleteModel
 from core.utils import get_random_number
 from user.models import UsrUser
 
