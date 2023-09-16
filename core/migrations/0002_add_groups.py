@@ -3,10 +3,11 @@
 from django.contrib.auth.models import Group
 from django.db import migrations
 
+from core.constant import GROUPS
 
-def add_groups(apps, schema_editor):
-    groups = ["Admin", "Client"]
-    for group in groups:
+
+def add_groups(apps, schema_editor):  # noqa
+    for group in GROUPS.values():
         _group, _created = Group.objects.get_or_create(name=group)
 
 
