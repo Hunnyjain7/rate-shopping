@@ -20,4 +20,4 @@ jobs:
         pip install -r requirements.txt
     - name: Run Pylint
       run: |
-        pylint --ignore-patterns=".*_migration\.py$" .
+        pylint *.py
