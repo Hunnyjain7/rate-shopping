@@ -20,7 +20,4 @@ jobs:
         pip install -r requirements.txt
     - name: Run Pylint
       run: |
-        pylint --load-plugins pylint_django rate-shopping
-    - name: Analysing the code with pylint
-      run: |
-        pylint $(git ls-files '*.py')
+        pylint --ignore-patterns=".*_migration\.py$" .
