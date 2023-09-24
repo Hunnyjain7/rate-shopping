@@ -39,8 +39,8 @@ class BaseActiveDeleteModel(ActiveDeleteModel, BaseModel):
 
 
 class Association(models.Model):
-    association_id = models.CharField(max_length=38)
-    association_type_term = models.CharField(max_length=39)
+    association_id = models.CharField(max_length=38, null=True, blank=True)
+    association_type_term = models.CharField(max_length=39, null=True, blank=True)
 
     class Meta:
         # Set abstract to True to prevent migrations for this base model

@@ -1,31 +1,39 @@
 from django.contrib.auth import authenticate
-
-from rest_framework.decorators import action
-from rest_framework.permissions import AllowAny
-from rest_framework import viewsets, status
+from rest_framework import status, viewsets
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
 from user.models import UsrUser
-from user.serializers import LoginSerializer
+from user.serializers import LoginSerializer, UsrUserSerializer
 
 
-class LoginViewSet(viewsets.ModelViewSet):
+class UsrUserViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
+    queryset = UsrUser.objects.filter(is_delete=False, is_active=True)
+    serializer_class = UsrUserSerializer
+
+    def perform_destroy(self, instance):
+        instance.delete(updated_by=self.request.user.id)
+
+
+class LoginViewSet(UsrUserViewSet):
     permission_classes = [AllowAny]
-    queryset = UsrUser
     serializer_class = LoginSerializer
 
-    @action(detail=False, methods=['GET'])
-    def login(self, request):
-        serializer = self.serializer_class(request.query_params)
-        validated_data = serializer.validate(request.query_params)
-        email = validated_data['email']
-        password = validated_data['password']
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(request.data)
+        validated_data = serializer.validate(request.data)
+        email = validated_data["email"]
+        password = validated_data["password"]
         user = authenticate(request, email=email, password=password)
         if not user:
             return Response(
-                {'error': 'Authentication failed. Check your email and password.'},
-                status=status.HTTP_401_UNAUTHORIZED
+                {"error": "Authentication failed. Check your email and password."},
+                status=status.HTTP_401_UNAUTHORIZED,
             )
 
         user_data = serializer.update(user, validated_data)
-        return Response({"message": "Logged in successfully", "data": user_data}, status=status.HTTP_200_OK)
+        return Response(
+            {"message": "Logged in successfully", "data": user_data},
+            status=status.HTTP_200_OK,
+        )

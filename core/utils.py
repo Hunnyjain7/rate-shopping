@@ -17,3 +17,9 @@ def get_group(name):
     if group.exists():
         return group.first()
     return
+
+
+def get_authenticated_user_id(context):
+    if "request" in context:
+        return context["request"].user.id
+    return

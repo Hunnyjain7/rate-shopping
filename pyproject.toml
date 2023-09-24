@@ -8,4 +8,4 @@ multi_line_output = 3
 line_length = 88
 default_section = "THIRDPARTY"
 known_first_party = []
-known_third_party = ["django", "dotenv", "phonenumber_field"]
+known_third_party = ["django", "dotenv", "phonenumber_field", "rest_framework", "rest_framework_simplejwt"]

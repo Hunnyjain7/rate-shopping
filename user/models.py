@@ -30,7 +30,7 @@ class UserManager(BaseUserManager):
     def create_superuser(self, email, password, **extra_fields):
         extra_fields.setdefault("is_superuser", True)
         extra_fields.setdefault("is_staff", True)
-        extra_fields.setdefault("seq_number", UsrUser.get_superuser_seq_number())
+        extra_fields.setdefault("seq_number", UsrUser.get_seq_number())
 
         if extra_fields.get("is_superuser") is not True:
             raise ValueError("Superuser must have is_superuser=True.")
@@ -50,7 +50,7 @@ class UsrUser(AbstractBaseUser, Association, BaseActiveDeleteModel, PermissionsM
     profile_image = models.FileField(
         upload_to="media/images/profile_images", null=True, blank=True
     )
-    display_name = models.CharField(max_length=61)
+    display_name = models.CharField(max_length=61, null=True, blank=True)
     mobile_number = PhoneNumberField(blank=True, null=True)
     seq_number = models.PositiveIntegerField(
         unique=True, editable=False, serialize=True, auto_created=True
@@ -67,7 +67,28 @@ class UsrUser(AbstractBaseUser, Association, BaseActiveDeleteModel, PermissionsM
     USERNAME_FIELD = "email"
 
     @staticmethod
-    def get_superuser_seq_number():
+    def get_seq_number():
         obj = UsrUser.objects.aggregate(max_value=Max("seq_number"))
         obj["max_value"] = 0 if obj["max_value"] is None else obj["max_value"]
         return obj["max_value"] + 1
+
+    def save(self, *args, **kwargs):
+        if not self.display_name:
+            display_name = self.username
+            if self.first_name and self.last_name:
+                display_name = f"{self.first_name} {self.last_name}"
+            self.display_name = display_name.title()
+        if not self.created_by:
+            self.created_by = self.updated_by
+        if not self.seq_number:
+            self.seq_number = self.get_seq_number()
+        if self.password:
+            self.set_password(self.password)
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        """Mark the record as deleted instead of deleting it"""
+        self.updated_by = kwargs.pop("updated_by")
+        self.is_delete = True
+        self.is_active = False
+        super().save(*args, **kwargs)
