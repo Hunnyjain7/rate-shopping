@@ -82,8 +82,7 @@ class UsrUser(AbstractBaseUser, Association, BaseActiveDeleteModel, PermissionsM
             self.created_by = self.updated_by
         if not self.seq_number:
             self.seq_number = self.get_seq_number()
-        if self.password:
-            self.set_password(self.password)
+
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):

@@ -1,3 +1,4 @@
+from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 
@@ -16,6 +17,12 @@ class UsrUserSerializer(serializers.ModelSerializer):
     def save(self, **kwargs):
         auth_user = get_authenticated_user_id(self.context)
         self.validated_data["updated_by"] = auth_user
+
+        if self.validated_data.get("password"):
+            self.validated_data["password"] = make_password(
+                self.validated_data["password"]
+            )
+
         if not self.instance:
             if self.validated_data.get("profile_image"):
                 raise serializers.ValidationError(

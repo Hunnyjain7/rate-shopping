@@ -161,7 +161,7 @@ cython_debug/
 
 *.pyc
 __pycache__
-media
+*.jpg
 
 # Backup files #
 *.bak
