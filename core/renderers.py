@@ -1,12 +1,17 @@
 from rest_framework import status as rest_status_codes
 from rest_framework.renderers import JSONRenderer
 
-from core.constant import DATA, ERROR, FAIL, MESSAGE, SUCCESS
+from core.constant import DATA, ERROR, FAIL, MESSAGE, STATUS, SUCCESS
 
 
 class CustomJSONRenderer(JSONRenderer):
     def render(self, data, accepted_media_type=None, renderer_context=None):
         response = renderer_context["response"]
+        response_data = self.get_response_data(data, response)
+        return super().render(response_data, accepted_media_type, renderer_context)
+
+    @staticmethod
+    def get_response_data(data, response):
         status_code = response.status_code
         success_status_codes = [
             rest_status_codes.HTTP_200_OK,
@@ -39,6 +44,4 @@ class CustomJSONRenderer(JSONRenderer):
         if status_code not in success_status_codes:
             error = data
             data = dict()
-        response_data = {SUCCESS: status, MESSAGE: message, ERROR: error, DATA: data}
-
-        return super().render(response_data, accepted_media_type, renderer_context)
+        return {STATUS: status, MESSAGE: message, ERROR: error, DATA: data}

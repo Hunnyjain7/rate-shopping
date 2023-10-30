@@ -1,6 +1,7 @@
 ADMIN = "Admin"
 CLIENT = "Client"
 GROUPS = {"Admin": ADMIN, "Client": CLIENT}
+STATUS = "status"
 SUCCESS = "success"
 FAIL = "fail"
 ERROR = "error"
