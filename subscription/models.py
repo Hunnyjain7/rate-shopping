@@ -57,9 +57,7 @@ class ClientSubscription(BaseActivationRenewal):
     ref_transaction_number = models.CharField(max_length=367, null=True, blank=True)
     due_date = models.DateTimeField()
     status_term = models.CharField(max_length=39, null=True, blank=True)
-    invoice_ref_number = models.CharField(
-        max_length=39, default=f"INV-REF-{get_random_number()}", editable=False
-    )
+    invoice_ref_number = models.CharField(max_length=39, editable=False)
     is_active = models.BooleanField(default=False)
     update_log = models.DateTimeField(auto_now=True)
     seq_number = models.PositiveIntegerField(
@@ -73,6 +71,11 @@ class ClientSubscription(BaseActivationRenewal):
     )
     main_amount = models.DecimalField(decimal_places=2, max_digits=15)
     discount = models.DecimalField(decimal_places=2, max_digits=15)
+
+    def save(self, *args, **kwargs):
+        if not self.invoice_ref_number:
+            self.invoice_ref_number = f"INV-REF-{get_random_number()}"
+        super(ClientSubscription, self).save(*args, **kwargs)
 
 
 class ClientSubscriptionDetail(MaxCCP):

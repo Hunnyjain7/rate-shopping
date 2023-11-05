@@ -17,7 +17,10 @@ Including another URLconf
 from django.urls import include, path
 from rest_framework import routers
 
+from .views import ClientViewSet
+
 router = routers.DefaultRouter()
+router.register(r"user", ClientViewSet, basename="user")
 
 urlpatterns = [
     path("", include(router.urls)),

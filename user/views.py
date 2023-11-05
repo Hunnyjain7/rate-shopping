@@ -22,8 +22,16 @@ class UsrUserViewSet(viewsets.ModelViewSet):
 
 
 class LoginViewSet(UsrUserViewSet):
-    permission_classes = [AllowAny]
     serializer_class = LoginSerializer
+
+    def get_permissions(self):
+        if self.action == "create":
+            permission_classes = [AllowAny]
+        else:
+            allowed_groups = [ADMIN]
+            permission_classes = [IsAuthenticated, is_in_group_factory(allowed_groups)]
+
+        return [permission() for permission in permission_classes]
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(request.data)

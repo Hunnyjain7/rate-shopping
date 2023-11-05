@@ -37,7 +37,7 @@ class CustomJSONRenderer(JSONRenderer):
             if MESSAGE in data
             else "Operation successful."
             if status == SUCCESS
-            else ""
+            else "Operation failed."
         )
         error = data.pop(ERROR) if ERROR in data else dict()
         data = data.pop(DATA) if DATA in data else data

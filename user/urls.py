@@ -23,4 +23,6 @@ router = routers.DefaultRouter()
 router.register(r"login", LoginViewSet, basename="login")
 router.register(r"user", UsrUserViewSet, basename="user")
 
-urlpatterns = [path("", include(router.urls))]
+urlpatterns = [
+    path("", include(router.urls)),
+]
