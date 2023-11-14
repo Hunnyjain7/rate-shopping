@@ -1,5 +1,6 @@
 import random
 import uuid
+from datetime import datetime
 
 from django.contrib.auth.models import Group
 
@@ -19,7 +20,15 @@ def get_group(name):
     return
 
 
-def get_authenticated_user_id(context):
+def get_authenticated_user(context):
     if "request" in context:
-        return context["request"].user.id
+        return context["request"].user
     return
+
+
+def get_today_datetime():
+    return datetime.now()
+
+
+def create_client_name(user):
+    return f"{user.first_name} {user.last_name}".title()

@@ -64,8 +64,8 @@ class Address(Association):
 
 
 class BaseActivationRenewal(models.Model):
-    date_of_activation = models.DateTimeField()
-    date_of_renewal = models.DateTimeField()
+    date_of_activation = models.DateTimeField(null=True, blank=True)
+    date_of_renewal = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         # Set abstract to True to prevent migrations for this base model

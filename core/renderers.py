@@ -1,7 +1,5 @@
-from rest_framework import status as rest_status_codes
 from rest_framework.renderers import JSONRenderer
-
-from core.constant import DATA, ERROR, FAIL, MESSAGE, STATUS, SUCCESS
+from core.constant import DATA, ERROR, FAIL, MESSAGE, STATUS, SUCCESS, SUCCESS_STATUS_CODES
 
 
 class CustomJSONRenderer(JSONRenderer):
@@ -13,35 +11,23 @@ class CustomJSONRenderer(JSONRenderer):
     @staticmethod
     def get_response_data(data, response):
         status_code = response.status_code
-        success_status_codes = [
-            rest_status_codes.HTTP_200_OK,
-            rest_status_codes.HTTP_201_CREATED,
-            rest_status_codes.HTTP_202_ACCEPTED,
-            rest_status_codes.HTTP_203_NON_AUTHORITATIVE_INFORMATION,
-            rest_status_codes.HTTP_204_NO_CONTENT,
-            rest_status_codes.HTTP_205_RESET_CONTENT,
-            rest_status_codes.HTTP_206_PARTIAL_CONTENT,
-            rest_status_codes.HTTP_207_MULTI_STATUS,
-            rest_status_codes.HTTP_208_ALREADY_REPORTED,
-            rest_status_codes.HTTP_226_IM_USED,
-        ]
         status = (
             data.pop(SUCCESS)
             if SUCCESS in data
             else SUCCESS
-            if status_code in success_status_codes
+            if status_code in SUCCESS_STATUS_CODES
             else FAIL
         )
         message = (
             data.pop(MESSAGE)
             if MESSAGE in data
-            else "Operation successful."
+            else "Data fetched successfully."
             if status == SUCCESS
             else "Operation failed."
         )
         error = data.pop(ERROR) if ERROR in data else dict()
         data = data.pop(DATA) if DATA in data else data
-        if status_code not in success_status_codes:
+        if not error and status_code not in SUCCESS_STATUS_CODES:
             error = data
             data = dict()
         return {STATUS: status, MESSAGE: message, ERROR: error, DATA: data}
