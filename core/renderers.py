@@ -1,5 +1,14 @@
 from rest_framework.renderers import JSONRenderer
-from core.constant import DATA, ERROR, FAIL, MESSAGE, STATUS, SUCCESS, SUCCESS_STATUS_CODES
+
+from core.constant import (
+    DATA,
+    ERROR,
+    FAIL,
+    MESSAGE,
+    STATUS,
+    SUCCESS,
+    SUCCESS_STATUS_CODES,
+)
 
 
 class CustomJSONRenderer(JSONRenderer):

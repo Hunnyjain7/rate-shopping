@@ -1,16 +1,22 @@
 from rest_framework.response import Response
 
-from core.constant import SUCCESS_STATUS_CODES
-
 
 class SuccessMessageMixin:
     success_messages = {
-        'create': "Data added successfully.",
-        'update': "Data updated successfully.",
-        'retrieve': "Detail's fetched successfully.",
-        'list': "Data fetched successfully.",
-        'destroy': "Data deleted successfully.",
-        'partial_update': "Data updated successfully."
+        "create": "Data added successfully.",
+        "update": "Data updated successfully.",
+        "retrieve": "Detail's fetched successfully.",
+        "list": "Data fetched successfully.",
+        "destroy": "Data deleted successfully.",
+        "partial_update": "Data updated successfully.",
+    }
+    error_messages = {
+        "create": "Failed to add data.",
+        "update": "Failed to update data.",
+        "retrieve": "Failed to fetch detail.",
+        "list": "Failed to fetch data.",
+        "destroy": "Failed to delete data.",
+        "partial_update": "Failed to partially update data.",
     }
 
     def dispatch(self, request, *args, **kwargs):
@@ -20,11 +26,22 @@ class SuccessMessageMixin:
         if response.data is None:
             response.data = {}
 
-        # Check if the method has a corresponding success message
-        method_name = self.action_map.get(request.method.lower())  # noqa
-        success_message = self.success_messages.get(method_name)
+        # Check if the action has a corresponding success message
+        action = self.action_map.get(request.method.lower())  # noqa
+        success_message = self.success_messages.get(action)
+        error_message = self.error_messages.get(action)
 
-        if success_message and isinstance(response, Response) and response.status_code in SUCCESS_STATUS_CODES:
-            response.data['message'] = success_message
+        if (
+            success_message
+            and isinstance(response, Response)
+            and response.status_code < 400
+        ):
+            response.data["message"] = success_message
+        elif (
+            error_message
+            and isinstance(response, Response)
+            and response.status_code >= 400
+        ):
+            response.data["message"] = error_message
 
         return response

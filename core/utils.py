@@ -32,3 +32,11 @@ def get_today_datetime():
 
 def create_client_name(user):
     return f"{user.first_name} {user.last_name}".title()
+
+
+def get_error_data(error="Operation failed."):
+    return {"error": error}
+
+
+def get_response_data(data=dict):
+    return {"data": data}

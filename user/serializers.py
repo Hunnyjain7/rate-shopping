@@ -1,33 +1,34 @@
-from django.contrib.auth.hashers import make_password
 from django.contrib.auth import password_validation
+from django.contrib.auth.hashers import make_password
 from django.core.exceptions import ValidationError as DjangoValidationError
-
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from core.constant import ADMIN
 from core.utils import get_authenticated_user
-
 from user.models import UsrUser
 
 
 class UsrUserSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True, min_length=8, max_length=15, required=True)
+    password = serializers.CharField(
+        write_only=True, min_length=8, max_length=15, required=True
+    )
 
     restricted_fields = [
-        'id',
-        'seq_number',
-        'is_superuser',
-        'is_active',
-        'is_delete',
-        'association_id',
-        'association_type_term',
-        'client_id',
-        'email',
-        'username',
-        'is_staff',
-        'is_default',
-        'is_it_admin'
+        "id",
+        "seq_number",
+        "is_superuser",
+        "is_active",
+        "is_delete",
+        "association_id",
+        "association_type_term",
+        "user_type_term",
+        "client_id",
+        "email",
+        "username",
+        "is_staff",
+        "is_default",
+        "is_it_admin",
     ]
 
     class Meta:
@@ -39,7 +40,9 @@ class UsrUserSerializer(serializers.ModelSerializer):
         if self.instance:
             for field in self.restricted_fields:
                 if field in data:
-                    raise serializers.ValidationError(f"{field} cannot be updated.")
+                    raise serializers.ValidationError(
+                        f"{field} cannot be inserted or updated."
+                    )
         return super().validate(data)
 
     def validate_password(self, value):
@@ -66,7 +69,9 @@ class UsrUserSerializer(serializers.ModelSerializer):
                     "Profile pic can be updated separately."
                 )
             self.validated_data["user_type_term"] = kwargs.get("user_type_term", ADMIN)
-            self.validated_data["association_type_term"] = kwargs.get("association_type_term")
+            self.validated_data["association_type_term"] = kwargs.get(
+                "association_type_term"
+            )
         return super().save(**kwargs)
 
 

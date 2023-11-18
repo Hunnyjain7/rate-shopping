@@ -14,7 +14,9 @@ class Client(BaseActiveDeleteModel, BaseActivationRenewal):
     address = models.ForeignKey(Address, on_delete=models.DO_NOTHING)
     date_of_registration = models.DateTimeField(auto_now=True, editable=False)
     client_status_term = models.CharField(max_length=39, null=True, blank=True)
-    activation_by = models.ForeignKey(UsrUser, on_delete=models.DateField, related_name="activation_by")
+    activation_by = models.ForeignKey(
+        UsrUser, on_delete=models.DateField, related_name="activation_by"
+    )
     relation_manager_id = models.CharField(max_length=39, null=True, blank=True)
     total_competitors = models.PositiveIntegerField(default=0)
     total_corporates = models.PositiveIntegerField(default=0)
@@ -22,7 +24,9 @@ class Client(BaseActiveDeleteModel, BaseActivationRenewal):
     last_contacted = models.DateTimeField(null=True, blank=True)
     user = models.OneToOneField(UsrUser, on_delete=models.DO_NOTHING)
     is_enable = models.BooleanField(default=True)
-    seq_number = models.PositiveIntegerField(unique=True, editable=False, serialize=True, auto_created=True)
+    seq_number = models.PositiveIntegerField(
+        unique=True, editable=False, serialize=True, auto_created=True
+    )
 
     @staticmethod
     def get_seq_number():
