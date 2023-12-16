@@ -1,0 +1,12 @@
+#hide-lable {
+  color: rgba(0, 0, 0, 0.6);
+  font-weight: 400;
+  font-size: 0.75rem;
+  line-height: 1.4375em;
+  letter-spacing: 0.00938em;
+  padding: 0;
+  transform-origin: top;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  margin-bottom: 5px;
+}
