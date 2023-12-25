@@ -33,15 +33,16 @@ class SuccessMessageMixin:
 
         if (
             success_message
+            and isinstance(response.data, dict)
             and isinstance(response, Response)
             and response.status_code < 400
         ):
             response.data["message"] = success_message
         elif (
             error_message
+            and isinstance(response.data, dict)
             and isinstance(response, Response)
             and response.status_code >= 400
         ):
             response.data["message"] = error_message
-
         return response

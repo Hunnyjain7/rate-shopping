@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-// import * as React from "react";
 import SignIn from "./components/signIn";
 
 function App() {
@@ -14,7 +13,7 @@ function App() {
   return (
     <>
       <div className="App">
-        <SignIn app={app} />
+        <SignIn app={app} isAdminSubdomain={isAdminSubdomain} />
       </div>
     </>
   );

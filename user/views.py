@@ -57,7 +57,7 @@ class UsrUserLoginViewSet(UsrUserViewSet):
         user = authenticate(request, email=email, password=password)
         if not user:
             return Response(
-                get_error_data("Authentication failed. Check your email and password."),
+                get_error_data("Invalid credential's!"),
                 status=status.HTTP_401_UNAUTHORIZED,
             )
         if not user.groups.filter(name=ADMIN).exists():
