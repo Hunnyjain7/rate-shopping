@@ -63,7 +63,19 @@ const SignIn = (app: any) => {
           />
         )}
         <Box sx={{ display: "flex", height: "100vh" }}>
-          <Box sx={{ flex: 1, backgroundColor: "#cfe8fc" }} />
+          <Box
+            sx={{
+              flex: 1,
+              display: "flex",
+              backgroundColor: "#cfe8fc",
+            }}
+          >
+            <img
+              src="https://picsum.photos/743/708"
+              alt="Rate Shopping"
+              loading="lazy"
+            />
+          </Box>
 
           <Box
             sx={{
@@ -85,7 +97,7 @@ const SignIn = (app: any) => {
                   variant="body2"
                   gutterBottom
                   sx={{
-                    marginTop: "-100px",
+                    marginTop: "-50px",
                     marginLeft: "400px",
                   }}
                 >
@@ -108,7 +120,9 @@ const SignIn = (app: any) => {
                   </Link>
                 </Typography>
               </Box>
-
+              <Typography variant="h2" gutterBottom>
+                Rate Shopping
+              </Typography>
               <Box
                 sx={{
                   display: "flex",

@@ -21,7 +21,7 @@ from .views import ClientLoginViewSet, ClientViewSet
 
 router = routers.DefaultRouter()
 router.register(r"login", ClientLoginViewSet, basename="client-login")
-router.register(r"user", ClientViewSet, basename="user")
+router.register(r"user", ClientViewSet, basename="client-user")
 
 urlpatterns = [
     path("", include(router.urls)),
