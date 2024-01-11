@@ -9,6 +9,7 @@ FAIL = "fail"
 ERROR = "error"
 MESSAGE = "message"
 DATA = "data"
+SYSTEM = "system"
 SUCCESS_STATUS_CODES = [
     status.HTTP_200_OK,
     status.HTTP_201_CREATED,

@@ -1,7 +1,7 @@
 from django.contrib.auth.models import Permission
 from django.core.management.base import BaseCommand
 
-from core.constant import ADMIN, CLIENT, GROUPS
+from core.constant import ADMIN, CLIENT, GROUPS, SYSTEM
 from core.utils import get_group
 from user.models import UsrUser
 
@@ -62,8 +62,8 @@ def create_superuser(stdout, options):  # noqa
     stdout.write("Creating Superuser...")
     admin_group = get_admin_group()
     extra_fields = {
-        "created_by": "system",
-        "updated_by": "system",
+        "created_by": SYSTEM,
+        "updated_by": SYSTEM,
         "username": "Hunny Jain",
         "display_name": "Hunny Jain",
         "first_name": "Hunny",
