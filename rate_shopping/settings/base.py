@@ -111,11 +111,14 @@ DATABASES = {
     }
 }
 
+# Set a default value for TEST_DATABASE_PREFIX, allowing it to be overridden by an environment variable
+TEST_DATABASE_PREFIX = os.environ.get("TEST_DATABASE_PREFIX", "test_")
+
 TEST = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "test_db.sqlite3",
-    }
+        "NAME": BASE_DIR / (TEST_DATABASE_PREFIX + "db.sqlite3"),
+    },
 }
 
 # Password validation
