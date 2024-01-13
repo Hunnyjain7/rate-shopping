@@ -39,7 +39,7 @@ jobs:
         export DJANGO_SETTINGS_MODULE=rate_shopping.settings
     - name: Run tests
       run: |
-        python manage.py test --settings=rate_shopping.settings
+        python manage.py test
 
     - name: Upload test results
       if: always()
