@@ -100,16 +100,26 @@ WSGI_APPLICATION = "rate_shopping.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": os.environ.get("DB_NAME"),
-        "USER": os.environ.get("DB_USER"),
-        "PASSWORD": os.environ.get("DB_PASS"),
-        "HOST": os.environ.get("DB_HOST", "127.0.0.1"),
-        "PORT": os.environ.get("DB_PORT", "5432"),
+if os.environ.get("DATABASE_ENGINE") == "sqlite":
+    print("it is using sqlite")
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+        },
     }
-}
+else:
+    print("it is using postgres")
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql_psycopg2",
+            "NAME": os.environ.get("DB_NAME"),
+            "USER": os.environ.get("DB_USER"),
+            "PASSWORD": os.environ.get("DB_PASS"),
+            "HOST": os.environ.get("DB_HOST", "127.0.0.1"),
+            "PORT": os.environ.get("DB_PORT", "5432"),
+        },
+    }
 
 # # Set a default value for TEST_DATABASE_PREFIX, allowing it to be overridden by an environment variable
 # TEST_DATABASE_PREFIX = os.environ.get("TEST_DATABASE_PREFIX", "test_")
