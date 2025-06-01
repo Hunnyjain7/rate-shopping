@@ -54,6 +54,10 @@ class UsrUserSerializer(serializers.ModelSerializer):
 
         return value
 
+    def validate_profile_image(self, value):
+        if not self.instance and value:
+            raise serializers.ValidationError("Profile pic can be updated separately.")
+
     def save(self, **kwargs):
         auth_user = get_authenticated_user(self.context)
         self.validated_data["updated_by"] = auth_user.id
